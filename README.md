@@ -1,4 +1,4 @@
-# Django Commerce Platform
+# Cartlane
 
 A server-rendered commerce platform with catalog, cart, account, blog, and checkout modules.
 
