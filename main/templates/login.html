@@ -1,0 +1,128 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% block title %}
+    <title>skyshop || Авторизация</title>
+    {% endblock %}
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+<body>
+
+
+    <!-- Body main wrapper start -->
+    <div class="wrapper">
+        {% block content %}
+
+        <!-- Start page content -->
+        <div id="page-content" class="page-wrapper">
+
+            <!-- LOGIN SECTION START -->
+            <div class="login-section mb-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="registered-customers">
+                                <h6 class="widget-title border-left mb-50">Авторизация</h6>
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <div class="login-account p-30 box-shadow">
+                                        <p>Для зарегистрированных пользователей</p>
+                                        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="254" required id="id_username" placeholder="Почта">
+                                        <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Пароль">
+                                        <p><small><a href="#">Забыли пароль?</a></small></p>
+                                        <button class="submit-btn-1 btn-hover-1" type="submit">Вход</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- new-customers -->
+                        <div class="col-md-6">
+                            <div class="new-customers">
+
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <h6 class="widget-title border-left mb-50">Новый пользователь</h6>
+                                    <div class="login-account p-30 box-shadow">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input type="text" name="first_name" maxlength="30" id="id_first_name" placeholder="Имя">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="last_name" maxlength="30" id="id_last_name" placeholder="Фамилия">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="custom-select" name="country" id="id_country">
+                                                    <option value="default" selected>Страна</option>
+                                                    <option value="Россия">Россия</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="custom-select" name="State" id="id_state">
+                                                    <option value="default" selected>Регион</option>
+                                                    <option value="Краснодарский край">Краснодарский край</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="custom-select" name="city" id="id_city">
+                                                    <option value="default" selected>Город</option>
+                                                    <option value="Краснодар" id="city_id">Краснодар</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="phone" maxlength="11" required id="id_phone"  placeholder="Телефон...">
+                                            </div>
+                                        </div>
+                                        <input type="text" name="email" maxlength="254" autofocus required id="id_email"  placeholder="Email/Почта..">
+                                        <input type="password" name="password1" autocomplete="new-password" required id="id_password1" placeholder="Пароль">
+                                        <input type="password" name="password2" autocomplete="new-password" required id="id_password2" placeholder="Повторите пароль">
+                                        <div class="checkbox">
+                                            <label class="mr-10"> 
+                                                <small>
+                                                    <input type="checkbox" name="Регистрация">Подписаться на нашу рассылку!
+                                                </small>
+                                            </label>
+                                            <label> 
+                                                <small>
+                                                    <input type="checkbox" name="signup">Подписаться на рассылку от наших партнеров!
+                                                </small>
+                                            </label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button class="submit-btn-1 mt-20 btn-hover-1" type="submit" value="">Регистрация</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button class="submit-btn-1 mt-20 btn-hover-1 f-right" type="reset">Очистить поля</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- LOGIN SECTION END -->             
+
+        </div>
+        <!-- End page content -->
+
+        {% endblock %}
+    </div>
+    <!-- Body main wrapper end -->
+
+
+</body>
+
+</html>

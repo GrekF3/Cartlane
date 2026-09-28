@@ -1,0 +1,406 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+<head>
+    {% block title %}
+        {% for product in product_list %}
+    <title>skyshop || {{ product.brand }} </title>
+        {% endfor %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <!-- Body main wrapper start -->
+    <div class="wrapper">
+        {% block content %}
+
+        <!-- BREADCRUMBS SETCTION START -->
+        <div class="breadcrumbs-section plr-200 mb-80">
+            <div class="breadcrumbs overlay-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="breadcrumbs-inner">
+                                {% if product_list %}
+                                {% for product in product_list %}
+                                    {% if forloop.counter == 1 %}
+                                <h1 class="breadcrumbs-title">{{ product.brand }}</h1>
+                                    {% endif %}
+                                {% endfor %}
+                                <ul class="breadcrumb-list">
+                                    <li><a href="{% url 'home' %}">Главная</a></li>
+                                        {% for product in product_list %}
+                                            {% if forloop.counter == 1 %}
+                                    <li>{{ product.brand }} Все товары</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                </ul>
+                                {% else %}
+                                <h1 class="breadcrumbs-title">Такого товара не существует</h1>
+                                <ul class="breadcrumb-list">
+                                    <li><a href="{% url 'home' %}">Главная</a></li>
+                                    <li>404</li>
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- BREADCRUMBS SETCTION END -->
+
+        <!-- Start page content -->
+        <div id="page-content" class="page-wrapper">
+
+            <!-- SHOP SECTION START -->
+            <div class="shop-section mb-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-md-push-3 col-xs-12">
+                            <div class="shop-content">
+                                <!-- shop-option start -->
+                                <div class="shop-option box-shadow mb-30 clearfix">
+                                    <!-- Nav tabs -->
+                                    <ul class="shop-tab f-left" role="tablist">
+                                        <li>
+                                            <a href="#grid-view" data-toggle="tab"><i class="zmdi zmdi-view-module"></i></a>
+                                        </li>
+                                        <li class="active">
+                                            <a href="#list-view" data-toggle="tab"><i class="zmdi zmdi-view-list-alt"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- short-by -->
+                                    <div class="short-by f-left text-center">
+                                        <span>Фильтр:</span>
+                                        <select>
+                                            <option value="newest">Новинки</option>
+                                            <option value="highprict">Самые дорогие</option>
+                                            <option value="lowprict">Самые дешевые</option>
+                                            <option value="popularity">Популярные</option>
+                                        </select>
+                                    </div>
+                                    <!-- showing -->
+                                    <div class="showing f-right text-right">
+                                        <span>Товаров: 01-09 из 20.</span>
+                                    </div>
+                                </div>
+                                <!-- shop-option end -->
+                                <!-- Tab Content start -->
+                                <div class="tab-content">
+                                    <!-- grid-view -->
+                                    <div role="tabpanel" class="tab-pane" id="grid-view">
+                                        <div class="row">
+                                            <!-- product-item start -->
+                                            {% for product in product_list %}
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <div class="product-item">
+                                                    <div class="product-img">
+                                                        <a href="#">
+                                                            {% for images in product.images.all %}
+                                                                {% if forloop.counter == 1 %}
+                                                            <img src="{{ images.image.url }}" alt=""/>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <h6 class="product-title">
+                                                            <a href="single-product.html">{{ product.name }}</a>
+                                                        </h6>
+                                                        <div class="pro-rating">
+                                                            <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                            <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                            <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                            <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                            <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                        </div>
+                                                        <h3 class="pro-price">$ {{ product.price}}</h3>
+                                                        <ul class="action-button">
+                                                            <li>
+                                                                <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" data-toggle="modal"  data-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- product-item end -->
+                                            {% endfor %}
+                                            <!-- product-item end -->
+                                        </div>
+                                    </div>
+                                    <!-- list-view -->
+                                    <div role="tabpanel" class="tab-pane active" id="list-view">
+                                        <div class="row">
+                                            <!-- product-item start -->
+                                            {% for product in product_list %}
+                                            <div class="col-md-12">
+                                                <div class="shop-list product-item">
+                                                    <div class="product-img">
+                                                        <a href="{% url 'product_detail' product.brand.slug product.slug %}">
+                                                            {% for images in product.images.all %}
+                                                                {% if forloop.counter == 1 %}
+                                                            <img src="{{ images.image.url }}" alt=""/>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <div class="clearfix">
+                                                            <h6 class="product-title f-left">
+                                                                <a href="{% url 'product_detail' product.brand.slug product.slug %}">{{ product.name }}</a>
+                                                            </h6>
+                                                            <div class="pro-rating f-right">
+                                                                <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                                <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                                <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                                <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                                <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <h6 class="brand-name mb-30">{{ product.brand }}</h6>
+                                                        <h3 class="pro-price">$ {{ product.price }}</h3>
+                                                        <p>{{ product.description }}</p>
+                                                        <ul class="action-button">
+                                                            <li>
+                                                                <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" data-toggle="modal"  data-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            <!-- product-item end -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tab Content end -->
+                                <!-- shop-pagination start -->
+                                <ul class="shop-pagination box-shadow text-center ptblr-10-30">
+                                    <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                                    <li><a href="#">01</a></li>
+                                    <li><a href="#">02</a></li>
+                                    <li><a href="#">03</a></li>
+                                    <li><a href="#">...</a></li>
+                                    <li><a href="#">05</a></li>
+                                    <li class="active"><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                                </ul>
+                                <!-- shop-pagination end -->
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-pull-9 col-xs-12">
+                            <!-- widget-search -->
+                            <aside class="widget-search mb-30">
+                                <form action="#">
+                                    <input type="text" placeholder="Поиск...">
+                                    <button type="submit"><i class="zmdi zmdi-search"></i></button>
+                                </form>
+                            </aside>
+                            <!-- widget-categories -->
+                            <aside class="widget widget-categories box-shadow mb-30">
+                                <h6 class="widget-title border-left mb-20">Категории</h6>
+                                <div id="cat-treeview" class="product-cat">
+                                    <ul>
+                                        <li class="closed"><a href="#">Apple</a>
+                                            <ul>
+                                                <li><a href="#">Смартфоны</a></li>
+                                                <li><a href="#">Планшеты</a></li>
+                                                <li><a href="#">Часы</a></li>
+                                                <li><a href="#">Наушники</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="open"><a href="#">Android</a>
+                                            <ul>
+                                                <li><a href="#">Смартфоны</a></li>
+                                                <li><a href="#">Планшеты</a></li>
+                                                <li><a href="#">Часы</a></li>
+                                                <li><a href="#">Наушники</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="closed"><a href="#">Аксессуары</a>
+                                            <ul>
+                                                <li><a href="#">Обувь</a></li>
+                                                <li><a href="#">Очки</a></li>
+                                                <li><a href="#">Часы</a></li>
+                                                <li><a href="#">Другое</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="closed"><a href="#">Топ Бренд</a>
+                                            <ul>
+                                                <li><a href="#">Смартфоны</a></li>
+                                                <li><a href="#">Планшеты</a></li>
+                                                <li><a href="#">Часы</a></li>
+                                                <li><a href="#">Наушники</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="closed"><a href="#">Украшения</a>
+                                            <ul>
+                                                <li><a href="#">Обувь</a></li>
+                                                <li><a href="#">Очки</a></li>
+                                                <li><a href="#">Часы</a></li>
+                                                <li><a href="#">Другое</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </aside>
+                            <!-- shop-filter -->
+                            <aside class="widget shop-filter box-shadow mb-30">
+                                <h6 class="widget-title border-left mb-20">Цена</h6>
+                                <div class="price_filter">
+                                    <div class="price_slider_amount">
+                                        <input type="submit"  value="Диапазон:"/>
+                                        <input type="text" id="amount" name="price"  placeholder="Указать свою..." />
+                                    </div>
+                                    <div id="slider-range"></div>
+                                </div>
+                            </aside>
+                            <!-- operating-system -->
+                            <aside class="widget operating-system box-shadow mb-30">
+                                <h6 class="widget-title border-left mb-20">ОС</h6>
+                                <form action="action_page.php">
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry Ios</label><br>
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">Android</label><br>
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">ios</label><br>
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                                    <label><input type="checkbox" name="operating-1" value="phone-1">Symban</label><br>
+                                    <label class="mb-0"><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry OS</label><br>
+                                </form>
+                            </aside>
+                            <!-- widget-product -->
+                            <aside class="widget widget-product box-shadow">
+                                <h6 class="widget-title border-left mb-20">Другие товары</h6>
+                                <!-- product-item start -->
+                                {% for product in product_list %}
+                                <div class="product-item">
+                                    <div class="product-img">
+                                        <a href="{% url 'product_detail' product.brand.slug product.slug %}">
+                                            {% for images in product.images.all %}
+                                                {% if forloop.counter == 1 %}
+                                            <img src=" {{ images.image.url }}" alt=""/>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </a>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-title">
+                                            <a href="single-product.html">{{ product.name }}</a>
+                                        </h6>
+                                        <h3 class="pro-price">$ {{ product.price }}</h3>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- product-item end -->
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SHOP SECTION END -->
+        </div>
+        <!-- End page content -->
+        <!-- START QUICKVIEW PRODUCT -->
+        <div id="quickview-wrapper">
+            <!-- Modal -->
+            <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-product clearfix">
+                                <div class="product-images">
+                                    <div class="main-image images">
+                                        <img alt="" src="img/product/quickview.jpg">
+                                    </div>
+                                </div><!-- .product-images -->
+
+                                <div class="product-info">
+                                    <h1>Aenean eu tristique</h1>
+                                    <div class="price-box-3">
+                                        <div class="s-price-box">
+                                            <span class="new-price">£160.00</span>
+                                            <span class="old-price">£190.00</span>
+                                        </div>
+                                    </div>
+                                    <a href="single-product-left-sidebar.html" class="see-all">See all features</a>
+                                    <div class="quick-add-to-cart">
+                                        <form method="post" class="cart">
+                                            <div class="numbers-row">
+                                                <input type="number" id="french-hens" value="3">
+                                            </div>
+                                            <button class="single_add_to_cart_button" type="submit">Add to cart</button>
+                                        </form>
+                                    </div>
+                                    <div class="quick-desc">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero.
+                                    </div>
+                                    <div class="social-sharing">
+                                        <div class="widget widget_socialsharing_widget">
+                                            <h3 class="widget-title-modal">Share this product</h3>
+                                            <ul class="social-icons clearfix">
+                                                <li>
+                                                    <a class="facebook" href="#" target="_blank" title="Facebook">
+                                                        <i class="zmdi zmdi-facebook"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="google-plus" href="#" target="_blank" title="Google +">
+                                                        <i class="zmdi zmdi-google-plus"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="twitter" href="#" target="_blank" title="Twitter">
+                                                        <i class="zmdi zmdi-twitter"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="pinterest" href="#" target="_blank" title="Pinterest">
+                                                        <i class="zmdi zmdi-pinterest"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="rss" href="#" target="_blank" title="RSS">
+                                                        <i class="zmdi zmdi-rss"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- .product-info -->
+                            </div><!-- .modal-product -->
+                        </div><!-- .modal-body -->
+                    </div><!-- .modal-content -->
+                </div><!-- .modal-dialog -->
+            </div>
+            <!-- END Modal -->
+        </div>
+        <!-- END QUICKVIEW PRODUCT -->
+        <!-- End page content -->
+    </div>
+    {% endblock %}
+    <!-- Body main wrapper end -->
+
+</body>

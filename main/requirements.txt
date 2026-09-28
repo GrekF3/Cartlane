@@ -1,0 +1,4 @@
+Django>=5.2.17,<6
+djangorestframework>=3.17.2,<4
+django-colorfield>=0.14,<1
+Pillow>=12.3,<13
